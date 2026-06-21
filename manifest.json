@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Volt",
+  "version": "1.2.0",
+  "description": "Engineered Precision — New Tab Dashboard",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": [
+    "storage",
+    "system.cpu",
+    "system.memory",
+    "identity",
+    "identity.email"
+  ],
+  "host_permissions": [
+    "https://openrouter.ai/*",
+    "https://*.googleapis.com/*",
+    "https://*.open-meteo.com/*",
+    "https://api.coingecko.com/*",
+    "https://dummyjson.com/*"
+  ]
+}

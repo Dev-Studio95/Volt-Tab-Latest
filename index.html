@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOLT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav class="nav">
+    <div class="nav-left">
+      <span class="logo">VOLT</span>
+      <div id="shortcuts-container" class="shortcuts-wrapper"></div>
+    </div>
+    <div class="nav-right">
+      <button id="add-shortcut-btn" class="btn-pill btn-ghost btn-sm">
+        <span class="material-symbols-outlined" style="font-size:16px;">add</span> ADD
+      </button>
+      <span id="sidebar-toggle" class="material-symbols-outlined nav-icon" title="Settings">settings</span>
+      <div id="user-profile-btn" class="user-avatar-sm" title="Account">
+        <span id="avatar-initial-sm">U</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── User Menu ── -->
+  <div id="user-menu" class="user-menu hidden">
+    <div class="user-menu-header">
+      <div id="user-avatar-lg" class="user-avatar-lg">
+        <span id="avatar-initial-lg">U</span>
+        <img id="user-avatar-img" src="" alt="" class="hidden">
+      </div>
+      <div class="user-info">
+        <p id="user-display-name" class="user-name">Welcome</p>
+        <p id="user-display-email" class="user-email">—</p>
+      </div>
+      <span id="close-user-menu" class="material-symbols-outlined nav-icon" style="margin-left:auto;">close</span>
+    </div>
+    <div class="user-menu-actions">
+      <button id="btn-manage-account" class="menu-action">
+        <span class="material-symbols-outlined">manage_accounts</span> Manage Account
+      </button>
+      <button id="btn-add-account" class="menu-action">
+        <span class="material-symbols-outlined">add</span> Add Account
+      </button>
+      <button id="btn-sign-out" class="menu-action danger">
+        <span class="material-symbols-outlined">logout</span> Sign Out
+      </button>
+    </div>
+    <div class="user-menu-footer">
+      <a href="https://policies.google.com/privacy" target="_blank">Privacy</a>
+      <span>·</span>
+      <a href="https://policies.google.com/terms" target="_blank">Terms</a>
+    </div>
+  </div>
+
+  <!-- ── Workspace ── -->
+  <main id="workspace" class="workspace">
+
+    <div id="widget-volt" class="widget draggable" data-id="volt">
+      <h1 class="volt-hero">Volt.</h1>
+    </div>
+
+    <div id="widget-clock" class="widget draggable" data-id="clock">
+      <div class="clock-time-row">
+        <span id="clock-hhmm" class="clock-hhmm">00:00</span>
+        <span id="clock-ss" class="clock-ss">:00</span>
+        <span id="clock-ampm" class="clock-ampm hidden"></span>
+      </div>
+      <div id="clock-date" class="clock-date">—</div>
+    </div>
+
+    <div id="widget-search" class="widget draggable" data-id="search">
+      <div class="search-wrap">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input id="search-input" class="search-input" placeholder="Search the web..." type="text" autocomplete="off">
+        <div class="search-engine-badge" id="engine-badge">G</div>
+      </div>
+    </div>
+
+    <div id="widget-stats" class="widget draggable widget-stats hidden" data-id="stats">
+      <div class="widget-header">
+        <span class="widget-label">System Stats</span>
+        <span class="material-symbols-outlined widget-icon">monitoring</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat-meta">
+          <span class="stat-name">CPU</span>
+          <span id="cpu-text" class="stat-value">--%</span>
+        </div>
+        <div class="progress-track"><div id="cpu-bar" class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-meta">
+          <span class="stat-name">RAM</span>
+          <span id="ram-text" class="stat-value">-- / -- GB</span>
+        </div>
+        <div class="progress-track"><div id="ram-bar" class="progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div id="widget-pomodoro" class="widget draggable widget-stats hidden" data-id="pomodoro">
+      <div class="widget-header">
+        <span class="widget-label">Focus Timer</span>
+        <span class="material-symbols-outlined widget-icon">timer</span>
+      </div>
+      <div id="pomo-display" class="pomo-display">25:00</div>
+      <div id="pomo-phase" class="pomo-phase">Focus</div>
+      <div class="pomo-controls">
+        <button id="pomo-start" class="btn-pill btn-ghost">Start</button>
+        <button id="pomo-reset" class="btn-pill btn-ghost">Reset</button>
+      </div>
+    </div>
+
+    <div id="widget-notes" class="widget draggable widget-notes hidden" data-id="notes">
+      <div class="widget-header">
+        <span class="widget-label">Scratchpad</span>
+        <span class="material-symbols-outlined widget-icon">edit_note</span>
+      </div>
+      <textarea id="notes-textarea" class="notes-input" placeholder="Start typing..."></textarea>
+    </div>
+
+    <div id="widget-weather" class="widget draggable widget-mini hidden" data-id="weather">
+      <div class="widget-header">
+        <span class="widget-label">Weather</span>
+        <span class="material-symbols-outlined widget-icon">partly_cloudy_day</span>
+      </div>
+      <div id="weather-temp" class="hero-metric">--°</div>
+      <div id="weather-desc" class="hero-sub">—</div>
+    </div>
+
+    <div id="widget-crypto" class="widget draggable widget-mini hidden" data-id="crypto">
+      <div class="widget-header">
+        <span class="widget-label">BTC / USD</span>
+        <span class="material-symbols-outlined widget-icon">currency_bitcoin</span>
+      </div>
+      <div id="crypto-price" class="hero-metric">$--</div>
+      <div id="crypto-change" class="hero-sub">—</div>
+    </div>
+
+    <div id="widget-quote" class="widget draggable widget-quote hidden" data-id="quote">
+      <span class="material-symbols-outlined quote-mark">format_quote</span>
+      <p id="quote-text" class="quote-text">Loading wisdom...</p>
+      <p id="quote-author" class="quote-author">— System</p>
+    </div>
+
+  </main>
+
+  <!-- ── Settings Sidebar ── -->
+  <aside id="config-sidebar" class="sidebar hidden-sidebar">
+    <div class="sidebar-header">
+      <div>
+        <h2 class="sidebar-title">Settings</h2>
+        <p class="sidebar-sub">Customize your workspace.</p>
+      </div>
+      <span id="close-sidebar-btn" class="material-symbols-outlined nav-icon">close</span>
+    </div>
+
+    <div class="sidebar-body">
+
+      <div class="setting-group">
+        <h3 class="group-label">Widgets</h3>
+        <div class="toggle-list">
+          <label class="toggle-row"><input type="checkbox" class="widget-toggle" data-target="volt" checked><span class="checkbox"></span> Volt Branding</label>
+          <label class="toggle-row"><input type="checkbox" class="widget-toggle" data-target="clock" checked><span class="checkbox"></span> Clock</label>
+          <label class="toggle-row"><input type="checkbox" class="widget-toggle" data-target="search" checked><span class="checkbox"></span> Search Bar</label>
+          <label class="toggle-row"><input type="checkbox" class="widget-toggle" data-target="weather"><span class="checkbox"></span> Weather</label>
+          <label class="toggle-row"><input type="checkbox" class="widget-toggle" data-target="crypto"><span class="checkbox"></span> Bitcoin Price</label>
+          <label class="toggle-row"><input type="checkbox" class="widget-toggle" data-target="quote"><span class="checkbox"></span> Daily Quote</label>
+          <label class="toggle-row"><input type="checkbox" class="widget-toggle" data-target="stats"><span class="checkbox"></span> System Stats</label>
+          <label class="toggle-row"><input type="checkbox" class="widget-toggle" data-target="pomodoro"><span class="checkbox"></span> Focus Timer</label>
+          <label class="toggle-row"><input type="checkbox" class="widget-toggle" data-target="notes"><span class="checkbox"></span> Scratchpad</label>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <h3 class="group-label">Appearance</h3>
+        <div class="toggle-list">
+          <label class="toggle-row"><input type="checkbox" id="setting-12hr"><span class="checkbox"></span> 12-Hour Clock</label>
+          <label class="toggle-row"><input type="checkbox" id="setting-footer" checked><span class="checkbox"></span> Show Footer</label>
+          <label class="toggle-row"><input type="checkbox" id="setting-lock"><span class="checkbox"></span> Lock Workspace</label>
+          <label class="toggle-row"><input type="checkbox" id="setting-overlap"><span class="checkbox"></span> Allow Overlap</label>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <h3 class="group-label">Search Engine</h3>
+        <select id="search-engine-select" class="sidebar-select">
+          <option value="https://www.google.com/search?q=">Google</option>
+          <option value="https://www.bing.com/search?q=">Bing</option>
+          <option value="https://duckduckgo.com/?q=">DuckDuckGo</option>
+          <option value="https://search.brave.com/search?q=">Brave Search</option>
+        </select>
+      </div>
+
+      <div class="setting-group">
+        <h3 class="group-label">Layout Presets</h3>
+        <div class="btn-row">
+          <button id="save-preset-btn" class="btn-pill btn-ghost" style="flex:1">Save Preset</button>
+          <button id="load-preset-btn" class="btn-pill btn-ghost" style="flex:1">Load Preset</button>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <h3 class="group-label">VOLT AI — OpenRouter</h3>
+        <input type="password" id="api-key-input" class="sidebar-input" placeholder="Paste API key...">
+        <p class="input-hint">Get a free key at <a href="https://openrouter.ai" target="_blank">openrouter.ai</a></p>
+      </div>
+
+    </div>
+
+    <button id="reset-layout-btn" class="btn-pill btn-danger">Reset Layout</button>
+  </aside>
+
+  <!-- ── Shortcut Modal ── -->
+  <div id="shortcut-modal" class="modal-bg hidden">
+    <div class="modal">
+      <h3 id="modal-title" class="modal-heading">Add Shortcut</h3>
+      <div class="modal-fields">
+        <input type="text" id="shortcut-name" class="sidebar-input" placeholder="Name (e.g., GitHub)" autocomplete="off">
+        <input type="text" id="shortcut-url"  class="sidebar-input" placeholder="URL  (e.g., https://github.com)" autocomplete="off">
+      </div>
+      <div class="modal-actions">
+        <button id="modal-delete" class="btn-pill btn-danger hidden" style="margin-right:auto;">Delete</button>
+        <button id="modal-cancel" class="btn-pill btn-ghost">Cancel</button>
+        <button id="modal-save"   class="btn-pill btn-accent">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── AI Chatbot ── -->
+  <button id="chat-fab" class="chat-fab">
+    <span class="material-symbols-outlined">robot_2</span>
+  </button>
+
+  <div id="chat-window" class="chat-window hidden">
+    <div class="chat-header">
+      <div class="chat-header-id">
+        <div class="chat-bot-avatar">AI</div>
+        <div>
+          <div class="chat-title">VOLT AI</div>
+          <div class="chat-model-tag" id="chat-model-tag">Llama 3 · 8B</div>
+        </div>
+      </div>
+      <div class="chat-header-actions">
+        <span id="chat-clear-btn" class="material-symbols-outlined nav-icon" title="Clear history">delete_sweep</span>
+        <span id="close-chat-btn" class="material-symbols-outlined nav-icon">close</span>
+      </div>
+    </div>
+    <div id="chat-messages" class="chat-messages">
+      <div class="msg msg-bot">System online. How can I help?</div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chat-input" class="chat-text-input" placeholder="Ask VOLT AI...">
+      <button id="chat-send-btn" class="chat-send-btn">
+        <span class="material-symbols-outlined">arrow_upward</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer id="app-footer" class="footer">
+    <span class="footer-tag">VOLT // v1.2</span>
+    <a href="https://github.com/Dev-Studio95" target="_blank" class="footer-link">
+      <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      @Dev-Studio95
+    </a>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
